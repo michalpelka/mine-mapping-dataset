@@ -1,0 +1,18 @@
+FROM ros:melodic
+ENV DEBIAN_FRONTEND noninteractive
+RUN set -x && \
+  apt-get update -y -qq && \
+  apt-get upgrade -y -qq --no-install-recommends && \
+  apt-get install -y -qq \
+    build-essential \
+    ros-melodic-pcl-ros \
+    ros-melodic-eigen-conversions \
+    screen
+COPY . /ros_ws/src
+WORKDIR /ros_ws
+
+RUN echo "source /opt/ros/melodic/setup.bash\nsource /ros_ws/devel/setup.bash\n" > ~/.bashrc
+
+RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /ros_ws; catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release' 
+ENTRYPOINT ["/bin/bash"]
+
