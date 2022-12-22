@@ -19,7 +19,7 @@ namespace configruation{
         0.627377, -0.622376,  0.468024, 0.0771511,
         0.772534,  0.421859,  -0.47458, -0.254041,
         0,         0,         0,         1;
-        return  Eigen::Affine3f(calib);
+        return  Eigen::Affine3f(2.0f*calib);
     }
 
     Eigen::Affine3f getLivoxCalib() {
@@ -51,6 +51,7 @@ namespace configruation{
 
     const std::vector<std::string> kTopicNames{TOPIC_LIVOX,TOPIC_VELO_STATIC,TOPIC_VELO_ROT};
     const std::vector<std::string> kLaserNames{"livox", "vlp32c", "vlp16rot"};
+
 }
 
 namespace my_utils{
@@ -161,7 +162,13 @@ namespace my_utils{
         double t2 = it_next->first;
         double difft1 = t1- query_time;
         double difft2 = t2- query_time;
-        if (std::fabs(difft1)< 0.1 && std::fabs(difft2)< 0.1 )
+        if (t1 == t2 && std::fabs(difft1)< 0.1){
+            ret = Eigen::Matrix4d::Identity();
+            ret.col(3).head<3>() = it_next->second.col(3).head<3>();
+            ret.topLeftCorner(3,3) = it_lower->second.topLeftCorner(3,3);
+            return ret;
+        }
+        if (std::fabs(difft1)< 0.15 && std::fabs(difft2)< 0.15 )
         {
             assert(t2>t1);
             assert(query_time>t1);
@@ -170,10 +177,15 @@ namespace my_utils{
             double res = (query_time-t1)/(t2-t1);
             Eigen::Vector3d diff = it_next->second.col(3).head<3>() - it_lower->second.col(3).head<3>();
             ret.col(3).head<3>() = it_next->second.col(3).head<3>() + diff*res;
-            ret.topLeftCorner(3,3) = it_lower->second.topLeftCorner(3,3);
+            Eigen::Matrix3d r1 = it_lower->second.topLeftCorner(3,3).matrix();
+            Eigen::Matrix3d r2 = it_next->second.topLeftCorner(3,3).matrix();
+            Eigen::Quaterniond q1(r1);
+            Eigen::Quaterniond q2(r2);
+            Eigen::Quaterniond qt = q1.slerp(res, q2);
+            ret.topLeftCorner(3,3) =  qt.toRotationMatrix();
             return ret;
         }
-        std::cout << "Problem with : " <<  difft1 << " " << difft2 << "  q : " << query_time<< std::endl;
+        std::cout << "Problem with : " <<  difft1 << " " << difft2 << "  q : " << query_time<< " t1 :"<<t1 <<" t2: "<<t2 << std::endl;
         return ret;
     }
     std::vector<bool> downsample (const std::vector<Eigen::Vector3f>& pointcloud, const float voxel_size){
