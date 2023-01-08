@@ -136,3 +136,23 @@ bool SaveLAZ::exportLaz(const std::string& filename,
     }
     return true;
 }
+
+bool SaveLAZ::exportPcd(const std::string& filename,
+               const std::vector<Eigen::Vector3f>& pointcloud,
+               const std::vector<uint16_t>& intensity){
+    pcl::PointCloud<pcl::PointXYZI> pointcloud_pcl;
+    pointcloud_pcl.resize(pointcloud.size());
+    if (pointcloud.size() ==0){
+        return false;
+    }
+    for (int i =0; i < pointcloud.size(); i++)
+    {
+        pointcloud_pcl[i].getVector3fMap() = pointcloud[i];
+        if (i < intensity.size()){
+            pointcloud_pcl[i].intensity = intensity[i];
+        }
+    }
+    pcl::io::savePCDFile(filename,pointcloud_pcl,true);
+    return true;
+}
+

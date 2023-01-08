@@ -41,9 +41,10 @@ include_directories(
 
 
 add_executable(release_data_laz src/release_data_laz.cpp src/SaveLAZ.cpp)
+add_executable(release_data_pcd_mat src/release_data_pcd_mat.cpp src/SaveLAZ.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(release_data_laz ${catkin_LIBRARIES} laszip  ${Eigen_LIBRARIES})
-
+target_link_libraries(release_data_pcd_mat ${catkin_LIBRARIES} laszip  ${Eigen_LIBRARIES})
