@@ -17,6 +17,11 @@ namespace SaveLAZ {
                    const std::vector<Eigen::Vector3f>& pointcloud,
                    const std::vector<uint16_t>& intensity =  std::vector<uint16_t>());
 
+    bool exportPly(const std::string& filename,
+                   const std::vector<Eigen::Vector3f>& pointcloud,
+                   const std::vector<uint16_t>& intensity =  std::vector<uint16_t>());
+
+
 };
 
 

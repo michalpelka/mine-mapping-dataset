@@ -19,7 +19,7 @@ namespace configruation{
         0.627377, -0.622376,  0.468024, 0.0771511,
         0.772534,  0.421859,  -0.47458, -0.254041,
         0,         0,         0,         1;
-        return  Eigen::Affine3f(2.0f*calib);
+        return  Eigen::Affine3f(calib * (Eigen::Matrix4f::Identity()*2.0)) ;
     }
 
     Eigen::Affine3f getLivoxCalib() {

@@ -11,8 +11,12 @@
 #include <thread>
 #include <boost/program_options.hpp>
 
-constexpr size_t kMaxNumberOfPoints = 1 * 1e6;
-constexpr float kMaxRangeXY = 30.f;
+#include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/filters/radius_outlier_removal.h>
+
+
+constexpr size_t kMaxNumberOfPoints = 0.25*1e6;
+constexpr float kMaxRangeXY = 450.f;
 constexpr float kMaxRangeZ = 450.f;
 
 
@@ -157,13 +161,24 @@ int main(int argc, char *argv[]) {
                 pcl_conversions::toPCL(*pointcloud_ptr, pcl_pc2);
                 pcl::PointCloud<pcl::PointXYZINormal>::Ptr tempCloud(
                         new pcl::PointCloud<pcl::PointXYZINormal>);
+                pcl::PointCloud<pcl::PointXYZINormal>::Ptr tempCloudFilter(
+                        new pcl::PointCloud<pcl::PointXYZINormal>);
                 pcl::fromPCLPointCloud2(pcl_pc2, *tempCloud);
+
                 if (tempCloud->empty()) {
                     continue;
                 }
+
+                pcl::RadiusOutlierRemoval<pcl::PointXYZINormal> sor;
+                sor.setInputCloud (tempCloud);
+                sor.setRadiusSearch(1.0);
+                sor.setMinNeighborsInRadius(4);
+//                sor.setMeanK (150);
+//                sor.setStddevMulThresh (10.0);
+                sor.filter (*tempCloudFilter);
                 const Eigen::Affine3f local_laser{configruation::getLivoxCalib().cast<float>()};
                 float time_stamp;
-                for (auto &p : *tempCloud) {
+                for (auto &p : *tempCloudFilter) {
                     time_stamp = p.normal_y; // timestamp is kept as normal-Y PCD field
                     const float angle = p.normal_x; // angle of rotation is kept as normal-X PCD field
                     [[maybe_unused]] const float ring = p.normal_z; // ring is kept as normal-Z PCD field
