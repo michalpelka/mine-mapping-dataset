@@ -1,3 +1,9 @@
 [submodule "process_mine_data/3rd/LASzip"]
 	path = process_mine_data/3rd/LASzip
 	url = https://github.com/LASzip/LASzip.git
+[submodule "visualize_mine_data/3rd/Sophus"]
+	path = visualize_mine_data/3rd/Sophus
+	url = https://github.com/strasdat/Sophus.git
+[submodule "visualize_mine_data/3rd/imgui"]
+	path = visualize_mine_data/3rd/imgui
+	url = https://github.com/ocornut/imgui.git

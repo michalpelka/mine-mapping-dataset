@@ -30,3 +30,13 @@ rosrun process_mine_data release_data_laz --bags /data --csv /data --output /dat
 ```
 In your dataset directory `D:/kopalnia_bags/bags-day1` the directory `processed` should appear.
 The whole process is lengthy (around half an hour).
+
+# Visualizing bag files
+
+It allows to visulize data from bag file directly, with known trajectory.
+
+Sample of usage
+```
+visualize_mine_data --bags bags/day1/Zjazd1_2021-10-29-19-51-33_12.bag --csv results/Zjazd1_2021-10-29-19-51-33_12_VLP32_trj.csv
+```
+![viewer](docs/viewer.gif)
