@@ -1,12 +1,6 @@
 # Links to download
 Set `${SERVER}` to `storage.googleapis.com/michal-mining-data`
-## LAZ processed file
-```
-https://${SERVER}/Processed-sample-LAZ/livox_0.zip
-https://${SERVER}/Processed-sample-LAZ/vlp16rot.zip
-https://${SERVER}/Processed-sample-LAZ/vlp32c.zip
 
-```
 
 ## Raw, compressed rosbags
 
