@@ -40,3 +40,18 @@ Sample of usage
 visualize_mine_data --bags bags/day1/Zjazd1_2021-10-29-19-51-33_12.bag --csv results/Zjazd1_2021-10-29-19-51-33_12_VLP32_trj.csv
 ```
 ![viewer](docs/viewer.gif)
+
+# Extrinisic calibration - experimental
+
+Tool allow to register mapping system to ground truth data, and optimize extrinics parameters of LiDAR.
+Can be used also to provide sample data for further analysis. 
+```
+extrinsic_calibration/extrinsic_calibration --gt /home/michal/analysis/fused_local.pcd \\
+--json /home/michal/analysis/site_1/site.json  \\
+--bags bags/day2/Day2_2021-10-30-10-51-12_21.bag \\
+--bags bags/day2/Day2_2021-10-30-10-52-12_22.bag \\
+--filter 0.2
+```
+Sample analysis done with that tool can be found here : https://drive.google.com/drive/folders/12Q3tLEX47gJGWJvgLTmVs8yncQco87Rn?usp=share_link
+
+![viewer](docs/calibrator.gif)

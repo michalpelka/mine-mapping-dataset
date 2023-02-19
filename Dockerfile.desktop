@@ -10,7 +10,7 @@ RUN set -x && \
     screen
 COPY . /ros_ws/src
 WORKDIR /ros_ws
-
+RUN TOUCH  /ros_ws/src/process_mine_data/CATKIN_IGNORE && /ros_ws/src/visualize_mine_data/CATKIN_IGNORE 
 RUN echo "source /opt/ros/melodic/setup.bash\nsource /ros_ws/devel/setup.bash\n" > ~/.bashrc
 
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /ros_ws; catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release' 
