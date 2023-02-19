@@ -25,8 +25,7 @@ Since this software solution is extremely hardware specific and requires custom-
 Feel free to contact us to get tips and recommendations for recreating such or a similar system.
 Every point has an individual timestamp, synchronization precision is 1-2 milliseconds.
 
-## Data acqusition
-Data was saved using [ROS](http://wiki.ros.org/rosbag) bag format using Melodic ROS distribution. You can use a newer version of ROS1 to work.
+## Data acqusitiondistribution. You can use a newer version of ROS1 to work.
 
 ## Dataset description
 
@@ -55,10 +54,51 @@ Sadly, there is no data recorder from IMU in Livox TELE-15
 
 # Quick start with data
 
-As a starting point we provide you with a Docker image that enables you to generate LAZ files using dataset and trajectory from our SLAM solution. Please refer to [readme](https://github.com/michalpelka/mine-mapping-export-las/blob/main/README.md) to learn more.
+As a starting point we provide you with a Docker image that enables you to generate LAZ files using dataset and trajectory from our SLAM solution. Please refer to [readme](https://github.com/michalpelka/mine-mapping-dataset/blob/main/README.md) to learn more.
  
+
+# Ground truth data
+The environment was mapped with FARO Focus 3D and scans were assembled using geodetic targets.
+The data is available here: https://drive.google.com/drive/folders/1kvlYNoj0QT_D8M65nwzR8D8I0pIArhMj?usp=sharing
+The location of scans and targets is shown here.  
+[ ![](assets/all_3_small.png) ](assets/all_3.png)  
+The ground truth data is georeferenced in [PL2000](https://epsg.io/2178) coordinate system. 
+
+The files avialable in groundtruth dataset:
+ - `aI_processed.laz` First level FARO FOCUS 3D
+ - `aIV_processed.laz` Fourth level FARO FOCUS 3D
+ - `aVI_processed.laz` Sixth level FARO FOCUS 3D
+ - `aV_processed.laz` Fifth level FARO FOCUS 3D
+ - `aVIII_processed.laz` Eigth level FARO FOCUS 3D
+ - `azrab_processed.laz` Enter level FARO FOCUS 3D
+ - `livox_*****_processed.laz` - Reference data from mobile mappng system in [PL2000](https://epsg.io/2178) coordinate system. 
+ - `crosses_with_extrapoint` - Locations of geodetic targets.
+ - `result_pc_dec0_5.laz` - decimated pointcloud containing all data from  FARO FOCUS 3D
+The names and location of targets in PL2000 coordinate system is given:
+
+|target| X | Y | Z                        |
+|------|------------|-----------|---------|
+| TS-1 | -86345.352 | 22671.020 | 249.098 |
+| TS-2 | -86346.390 | 22672.932 | 249.391 |
+| TS-3 | -86347.665 | 22669.905 | 249.503 |
+| TS-4 | -86347.457 | 22671.858 | 248.701 |
+| T1-1 | -86347.239 | 22668.482 | 196.697 |
+| T1-2 | -86347.484 | 22671.017 | 196.918 |
+| T4-1 | -86346.082 | 22672.304 | 75.892  |
+| T4-2 | -86345.222 | 22673.541 | 74.974  |
+| T6-1 | -86345.387 | 22673.960 | 8.564   |
+| T6-2 | -86344.347 | 22674.161 | 8.564   |
+| T8-1 | -86345.550 | 22678.609 | -41.371 |
+| T8-2 | -86343.015 | 22680.587 | -41.152 |
+| T8-4 | -86347.258 | 22671.981 | -40.004 |
+| T8-5 | -86347.847 | 22670.668 | -38.436 |
+| T8-6 | -86346.088 | 22669.629 | -38.438 |
+
 # Download
-Please provide your email to obtain a link to download this [questionnaire](https://forms.gle/Z3NiTrCbX5dHVExC7).
+Current links to download rosbags from mobile system are avaialable here: 
+[links.md](https://github.com/michalpelka/mine-mapping-dataset/blob/gh-pages/docs/assets/links.md)
+The georeferenced ground truth is available here:
+[Google Drive](https://drive.google.com/drive/folders/1kvlYNoj0QT_D8M65nwzR8D8I0pIArhMj?usp=sharing)
 
 # Gallery
 [ ![](assets/photo1_small.jpg) ](assets/photo1.jpg)
