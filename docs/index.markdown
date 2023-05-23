@@ -30,32 +30,52 @@ Every point has an individual timestamp, synchronization precision is 1-2 millis
 ## Dataset description
 
 - Compression : `BZ2`
-- Raw data size : 225 Gb
-- Length : 69 minutes (60 second per file)
+- Raw data size : 49 Gb
+- Length : 69 minutes (10 minutes per file)
 
 ### Topics
 
-- /imu/data_hwts : `Sensor_msgs/IMU` 
-- /livox_raw :
+- /imu : `Sensor_msgs/IMU` 
+- /livox :
 `Sensor_msgs/Pointcloud2`
 - /velodyne_rot :
 `Sensor_msgs/Pointcloud2`
-- /velodyne_static_raw :
+- /velodyne :
 `Sensor_msgs/Pointcloud2`
+- /tf : `tf2_msgs/TFMessage`
+- /tf_static : `tf2_msgs/TFMessage`
 
-Note that used point type is `PCL::PointXYZINormal`, and normal fields were repourpouse for other [metadata](https://github.com/michalpelka/mine-mapping-export-las/blob/main/process_mine_data/src/release_data_laz.cpp#L156):
-- `NormalX` - hardware timestamp
-- `NormalY` - rotation unit angle, revelant to `/velodyne_rot`
-- `NormalZ` - ring number 
 
-Data from AHRS IMU. ROS timestamp in header is synchronized to rest of the system.
+Note that used point type is `PointXYZIRT`, the header for PCL library can be found [here](https://github.com/michalpelka/mine_dataset_process_bag/blob/master/point_types.h).
+
+Data from AHRS IMU. ROS timestamp in header (also in '\tf' topic) is synchronized to rest of the system.
 
 Sadly, there is no data recorder from IMU in Livox TELE-15
 
 # Quick start with data
 
-As a starting point we provide you with a Docker image that enables you to generate LAZ files using dataset and trajectory from our SLAM solution. Please refer to [readme](https://github.com/michalpelka/mine-mapping-dataset/blob/main/README.md) to learn more.
- 
+Files can be visualized using RViz, we provide custom, updated calibration to overide deafult one from rosbag.
+
+Sample of usage:
+In first terminal start roscore
+```
+rosparam set use_sim_time true
+roscore
+```
+In second terminal start broadcasting new calibration and play bags files:
+```
+python mine-mapping-dataset/visualization/publish_custom_calibration.py &
+rosbag play day1/mine_mapping_trajectory.bag day1/mine_mapping_0**.bag --clock -s 200 tf_static:=old_tf_static
+```
+In the third terminal open rviz:
+```
+rviz -d mine-mapping-dataset/visualization/config.rviz
+```
+Expected results:
+
+[![YouTube](https://img.youtube.com/vi/A6Is-ao9THQ/0.jpg)](https://www.youtube.com/watch?v=A6Is-ao9THQ "YouTube")
+
+[Youtube video](https://www.youtube.com/watch?v=A6Is-ao9THQ)
 
 # Ground truth data
 The environment was mapped with FARO Focus 3D and scans were assembled using geodetic targets.
